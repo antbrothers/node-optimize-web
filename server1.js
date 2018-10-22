@@ -2,7 +2,7 @@
  * @Author: antbrother 
  * @Date: 2018-10-22 10:58:00 
  * @Last Modified by: antbrother
- * @Last Modified time: 2018-10-22 13:05:56
+ * @Last Modified time: 2018-10-22 13:48:39
  */
 var fs = require('fs'),
     path = require('path'),
@@ -13,7 +13,13 @@ var MIME = {
     '.js': 'application/javascript'
 };
 
-// 合并文件内容
+/**
+ * Desc : 此处为串读取文件，当请求的文件多，需要合并的数据也比较大时，会拖慢服务器的消耗时间
+ * 虽然每一次都会完整的把数据读到内存并且缓存起来，当服务器并发比较大时,就会有较大的内存开销
+ * 优化：采用流式读取方式：一遍读取，一遍输出，把相应的输出时机提前至读取第一个文件的时刻 即使调用（fs.createReadStream）
+ * @param {*} pathnames 
+ * @param {*} callback 
+ */
 function combineFiles(pathnames, callback) {
     var output = [];
 
