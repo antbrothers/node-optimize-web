@@ -2,7 +2,7 @@
  * @Author: antbrother 
  * @Date: 2018-10-22 10:58:00 
  * @Last Modified by: antbrother
- * @Last Modified time: 2018-10-23 15:08:18
+ * @Last Modified time: 2018-10-23 16:06:29
  */
 var fs = require('fs'),
     path = require('path'),
@@ -23,7 +23,6 @@ var MIME = {
  */
 function combineFiles(pathnames, callback) {
     var output = [];
-
     (function next(i, len) {
         if (i < len) {
             fs.readFile(pathnames[i], function (err, data) {
@@ -51,9 +50,7 @@ function main(argv) {
     http.createServer(function (request, response) {
         debugger
          var urlInfo = parseURL(root, request.url);
-
          console.log(urlInfo);
-
          combineFiles(urlInfo.pathnames, function (err, data) {
              if (err) {
                  response.writeHead(404);
@@ -86,7 +83,6 @@ function parseURL (root, url) {
         var filePath = path.join(root, base, value);
         return filePath;
     });
-
     return {
         mime: MIME[path.extname(pathnames[0])] || 'text/plain',
         pathnames: pathnames
