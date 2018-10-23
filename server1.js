@@ -2,7 +2,7 @@
  * @Author: antbrother 
  * @Date: 2018-10-22 10:58:00 
  * @Last Modified by: antbrother
- * @Last Modified time: 2018-10-22 13:48:39
+ * @Last Modified time: 2018-10-23 15:08:18
  */
 var fs = require('fs'),
     path = require('path'),
@@ -10,7 +10,8 @@ var fs = require('fs'),
 
 var MIME = {
     '.css': 'text/css',
-    '.js': 'application/javascript'
+    '.js': 'application/javascript',
+    '.html': 'text/html'
 };
 
 /**
@@ -48,6 +49,7 @@ function main(argv) {
     var port = 8300;
 
     http.createServer(function (request, response) {
+        debugger
          var urlInfo = parseURL(root, request.url);
 
          console.log(urlInfo);
@@ -77,6 +79,9 @@ function parseURL (root, url) {
 
     parts = url.split('??');
     base = parts[0];
+    if (parts[1].indexOf(',') === -1) {
+        pathnames = path.join(root, base, parts[1])       
+    }
     pathnames = parts[1].split(',').map(function(value) {
         var filePath = path.join(root, base, value);
         return filePath;
